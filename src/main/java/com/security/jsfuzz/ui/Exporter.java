@@ -1,6 +1,6 @@
-package com.security.jsapihunter.ui;
+package com.security.jsfuzz.ui;
 
-import com.security.jsapihunter.model.ApiEndpoint;
+import com.security.jsfuzz.model.ApiEndpoint;
 
 import java.io.IOException;
 import java.io.Writer;

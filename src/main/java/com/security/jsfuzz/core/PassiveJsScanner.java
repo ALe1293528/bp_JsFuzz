@@ -1,4 +1,4 @@
-package com.security.jsapihunter.core;
+package com.security.jsfuzz.core;
 
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.core.Annotations;
@@ -10,10 +10,10 @@ import burp.api.montoya.scanner.audit.insertionpoint.AuditInsertionPoint;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import burp.api.montoya.scanner.audit.issues.AuditIssueConfidence;
 import burp.api.montoya.scanner.audit.issues.AuditIssueSeverity;
-import com.security.jsapihunter.model.ApiEndpoint;
-import com.security.jsapihunter.security.ApiSecurityManager;
-import com.security.jsapihunter.ui.MainUI;
-import com.security.jsapihunter.util.UrlNormalizer;
+import com.security.jsfuzz.model.ApiEndpoint;
+import com.security.jsfuzz.security.ApiSecurityManager;
+import com.security.jsfuzz.ui.MainUI;
+import com.security.jsfuzz.util.UrlNormalizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class PassiveJsScanner implements ScanCheck {
             }
             return auditResult(List.of(buildIssue(rr, links)));
         } catch (Exception e) {
-            api.logging().logToError("[JS API Hunter] passive scan error: " + e.getMessage());
+            api.logging().logToError("[JsFuzz] passive scan error: " + e.getMessage());
             return auditResult(List.of());
         }
     }
@@ -119,7 +119,7 @@ public class PassiveJsScanner implements ScanCheck {
 
     private AuditIssue buildIssue(HttpRequestResponse rr, List<String> links) {
         StringBuilder detail = new StringBuilder(
-                "JS API Hunter analysed this JS file and discovered the following endpoints:<ul>");
+                "JsFuzz analysed this JS file and discovered the following endpoints:<ul>");
         for (String link : links) {
             detail.append("<li>").append(escapeHtml(link)).append("</li>");
         }
@@ -127,7 +127,7 @@ public class PassiveJsScanner implements ScanCheck {
                 + "unauthorized-access, IDOR, fuzz and risk results.");
 
         return AuditIssue.auditIssue(
-                "JS API Hunter - Endpoints discovered in JS file",
+                "JsFuzz - Endpoints discovered in JS file",
                 detail.toString(),
                 null,
                 rr.request().url(),

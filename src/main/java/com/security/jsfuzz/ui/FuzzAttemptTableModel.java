@@ -1,6 +1,6 @@
-package com.security.jsapihunter.ui;
+package com.security.jsfuzz.ui;
 
-import com.security.jsapihunter.model.FuzzAttempt;
+import com.security.jsfuzz.model.FuzzAttempt;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.security.jsapihunter.core;
+package com.security.jsfuzz.core;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

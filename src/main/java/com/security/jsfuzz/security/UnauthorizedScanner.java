@@ -1,9 +1,9 @@
-package com.security.jsapihunter.security;
+package com.security.jsfuzz.security;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
-import com.security.jsapihunter.model.ApiEndpoint;
-import com.security.jsapihunter.model.RiskLevel;
+import com.security.jsfuzz.model.ApiEndpoint;
+import com.security.jsfuzz.model.RiskLevel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

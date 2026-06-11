@@ -1,7 +1,7 @@
-package com.security.jsapihunter.security;
+package com.security.jsfuzz.security;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
-import com.security.jsapihunter.model.ApiEndpoint;
+import com.security.jsfuzz.model.ApiEndpoint;
 
 /**
  * Part 4: endpoint liveness detection.

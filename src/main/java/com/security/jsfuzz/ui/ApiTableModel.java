@@ -1,6 +1,6 @@
-package com.security.jsapihunter.ui;
+package com.security.jsfuzz.ui;
 
-import com.security.jsapihunter.model.ApiEndpoint;
+import com.security.jsfuzz.model.ApiEndpoint;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.Instant;

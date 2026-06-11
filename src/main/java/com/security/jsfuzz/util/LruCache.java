@@ -1,4 +1,4 @@
-package com.security.jsapihunter.util;
+package com.security.jsfuzz.util;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;

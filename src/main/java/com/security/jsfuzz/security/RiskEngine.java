@@ -1,7 +1,7 @@
-package com.security.jsapihunter.security;
+package com.security.jsfuzz.security;
 
-import com.security.jsapihunter.model.ApiEndpoint;
-import com.security.jsapihunter.model.RiskLevel;
+import com.security.jsfuzz.model.ApiEndpoint;
+import com.security.jsfuzz.model.RiskLevel;
 
 /**
  * Part 7: risk scoring. Computes a final level from all collected signals.

@@ -1,4 +1,4 @@
-package com.security.jsapihunter.ui;
+package com.security.jsfuzz.ui;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;

@@ -1,17 +1,17 @@
-package com.security.jsapihunter;
+package com.security.jsfuzz;
 
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
-import com.security.jsapihunter.core.PassiveJsScanner;
-import com.security.jsapihunter.security.ApiSecurityManager;
-import com.security.jsapihunter.ui.MainUI;
+import com.security.jsfuzz.core.PassiveJsScanner;
+import com.security.jsfuzz.security.ApiSecurityManager;
+import com.security.jsfuzz.ui.MainUI;
 
 /**
- * Montoya entry point for JS API Hunter Pro.
+ * Montoya entry point for JsFuzz Pro.
  * Replaces the Jython BurpExtender.registerExtenderCallbacks.
  */
-public class JsApiHunterExtension implements BurpExtension {
+public class JsFuzzExtension implements BurpExtension {
 
     @Override
     public void initialize(MontoyaApi api) {

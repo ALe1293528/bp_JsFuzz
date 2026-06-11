@@ -1,4 +1,4 @@
-package com.security.jsapihunter.ui;
+package com.security.jsfuzz.ui;
 
 import burp.api.montoya.MontoyaApi;
 

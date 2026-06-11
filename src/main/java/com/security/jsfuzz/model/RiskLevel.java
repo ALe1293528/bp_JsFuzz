@@ -1,4 +1,4 @@
-package com.security.jsapihunter.model;
+package com.security.jsfuzz.model;
 
 /**
  * Risk classification used by RiskEngine and the API Security table.

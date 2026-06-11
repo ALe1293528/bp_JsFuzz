@@ -1,11 +1,11 @@
-package com.security.jsapihunter.security;
+package com.security.jsfuzz.security;
 
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import com.security.jsapihunter.fuzz.ApiFuzzEngine;
-import com.security.jsapihunter.model.ApiEndpoint;
-import com.security.jsapihunter.model.FuzzAttempt;
-import com.security.jsapihunter.util.LruCache;
+import com.security.jsfuzz.fuzz.ApiFuzzEngine;
+import com.security.jsfuzz.model.ApiEndpoint;
+import com.security.jsfuzz.model.FuzzAttempt;
+import com.security.jsfuzz.util.LruCache;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -67,7 +67,7 @@ public class ApiSecurityManager {
             try {
                 runPipeline(ep);
             } catch (Exception e) {
-                api.logging().logToError("[JS API Hunter] pipeline error for "
+                api.logging().logToError("[JsFuzz] pipeline error for "
                         + ep.getUrl() + ": " + e.getMessage());
             } finally {
                 if (onResult != null) {

@@ -1,4 +1,4 @@
-package com.security.jsapihunter.security;
+package com.security.jsfuzz.security;
 
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;

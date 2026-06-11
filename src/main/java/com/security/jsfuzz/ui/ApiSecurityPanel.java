@@ -1,4 +1,4 @@
-package com.security.jsapihunter.ui;
+package com.security.jsfuzz.ui;
 
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -6,8 +6,8 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.editor.EditorOptions;
 import burp.api.montoya.ui.editor.HttpRequestEditor;
 import burp.api.montoya.ui.editor.HttpResponseEditor;
-import com.security.jsapihunter.model.ApiEndpoint;
-import com.security.jsapihunter.model.FuzzAttempt;
+import com.security.jsfuzz.model.ApiEndpoint;
+import com.security.jsfuzz.model.FuzzAttempt;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -270,7 +270,7 @@ public class ApiSecurityPanel extends JPanel {
                 api.intruder().sendToIntruder(req);
             }
         } catch (Exception ex) {
-            api.logging().logToError("[JS API Hunter] send error: " + ex.getMessage());
+            api.logging().logToError("[JsFuzz] send error: " + ex.getMessage());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.security.jsapihunter.model;
+package com.security.jsfuzz.model;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
